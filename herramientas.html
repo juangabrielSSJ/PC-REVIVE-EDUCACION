@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herramientas — PC Revive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --dark: #111111; --card: #181818;
+      --yellow: #f5e600; --white: #f0f0f0; --gray: #888;
+      --border: rgba(245,230,0,0.18);
+    }
+    body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 64px;
+      background: rgba(10,10,10,0.95); border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .12em; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--yellow); }
+    .nav-back { font-family: 'Space Mono', monospace; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--yellow); text-decoration: none; }
+
+    .page-hero { padding: 80px 5vw 60px; background: var(--dark); border-bottom: 1px solid var(--border); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--yellow); margin-bottom: 1rem; }
+    h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5.5rem); letter-spacing: .04em; line-height: .95; margin-bottom: 1.2rem; }
+    h1 span { color: var(--yellow); }
+    .hero-sub { color: #888; max-width: 560px; line-height: 1.75; font-size: .95rem; }
+
+    .content { padding: 80px 5vw; }
+
+    .filter-tabs { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    .tab { font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; padding: .5rem 1.2rem; border: 1px solid var(--border); color: var(--gray); cursor: pointer; background: transparent; transition: all .2s; }
+    .tab.active, .tab:hover { border-color: var(--yellow); color: var(--yellow); }
+
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .tool-card {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 2.2rem 2rem; text-decoration: none;
+      display: block; transition: border-color .2s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .tool-card:hover { border-color: var(--yellow); transform: translateY(-4px); }
+    .tool-tag { font-family: 'Space Mono', monospace; font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--yellow); border: 1px solid var(--yellow); padding: .15rem .5rem; display: inline-block; margin-bottom: 1rem; }
+    .tool-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .05em; color: var(--white); margin-bottom: .7rem; }
+    .tool-card p { color: #888; font-size: .88rem; line-height: 1.65; margin-bottom: 1.2rem; }
+    .tool-link { font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: .1em; color: var(--yellow); text-transform: uppercase; }
+
+    .coming-soon { opacity: .5; cursor: default; }
+    .coming-soon:hover { transform: none; border-color: var(--border); }
+    .cs-label { background: var(--yellow); color: var(--black); font-family: 'Space Mono', monospace; font-size: .62rem; font-weight: 700; letter-spacing: .1em; padding: .2rem .6rem; position: absolute; top: 1.2rem; right: 1.2rem; }
+
+    .btn-back { display: inline-flex; align-items: center; gap: .5rem; background: var(--yellow); color: var(--black); font-family: 'Space Mono', monospace; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; padding: .9rem 1.8rem; margin-top: 3rem; }
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><span>PC</span> REVIVE</a>
+  <a class="nav-back" href="index.html">← Volver</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Recursos educativos</div>
+  <h1>Herramientas<br><span>Digitales</span></h1>
+  <p class="hero-sub">Simuladores, calculadoras y materiales interactivos creados para las materias de física, química y matemáticas en Bolivia.</p>
+</div>
+
+<div class="content">
+  <div class="filter-tabs">
+    <div class="tab active">Todas</div>
+    <div class="tab">Física</div>
+    <div class="tab">Química</div>
+    <div class="tab">Matemáticas</div>
+    <div class="tab">Sistemas</div>
+  </div>
+
+  <div class="tools-grid">
+    <a class="tool-card" href="#">
+      <span class="tool-tag">Física</span>
+      <h3>Simulador de Movimiento</h3>
+      <p>Visualiza trayectorias, velocidad y aceleración con parámetros ajustables para la clase.</p>
+      <div class="tool-link">Abrir herramienta →</div>
+    </a>
+    <a class="tool-card" href="#">
+      <span class="tool-tag">Matemáticas</span>
+      <h3>Calculadora Gráfica</h3>
+      <p>Grafica funciones, resuelve ecuaciones y explora geometría analítica de forma interactiva.</p>
+      <div class="tool-link">Abrir herramienta →</div>
+    </a>
+    <a class="tool-card" href="#">
+      <span class="tool-tag">Química</span>
+      <h3>Tabla Periódica Interactiva</h3>
+      <p>Consulta propiedades, configuraciones electrónicas y datos de cada elemento.</p>
+      <div class="tool-link">Abrir herramienta →</div>
+    </a>
+    <a class="tool-card" href="#">
+      <span class="tool-tag">Sistemas</span>
+      <h3>Conceptos de Hardware</h3>
+      <p>Guía visual de componentes de una computadora para enseñar a estudiantes de secundaria.</p>
+      <div class="tool-link">Abrir herramienta →</div>
+    </a>
+    <div class="tool-card coming-soon">
+      <div class="cs-label">Próximamente</div>
+      <span class="tool-tag">Física</span>
+      <h3>Laboratorio Virtual</h3>
+      <p>Experimentos de óptica y electricidad sin necesidad de equipos físicos en el aula.</p>
+      <div class="tool-link">En desarrollo</div>
+    </div>
+    <div class="tool-card coming-soon">
+      <div class="cs-label">Próximamente</div>
+      <span class="tool-tag">Matemáticas</span>
+      <h3>Generador de Ejercicios</h3>
+      <p>Crea hojas de trabajo personalizadas con ejercicios y respuestas automáticas.</p>
+      <div class="tool-link">En desarrollo</div>
+    </div>
+  </div>
+
+  <a class="btn-back" href="index.html">← Volver al inicio</a>
+</div>
+</body>
+</html>

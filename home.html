@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PC Revive — Soluciones Tecnológicas Bolivia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style> 
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --deep:#060a1f;
+      --blue:#1a2aff;
+      --violet:#7c3aff;
+      --purple:#a020f0;
+      --cyan:#00d4ff;
+      --pink:#ff2df7;
+      --green:#00ffb3;
+      --white:#eef2ff;
+      --text:#d4dcf5;
+      --card:rgba(120,80,255,0.1);
+      --border:rgba(120,80,255,0.35);
+    }
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--deep);
+      color:var(--white);
+      font-family:'Nunito',sans-serif;
+      overflow-x:hidden;
+      cursor:default;
+    }
+
+    /* ══════ CANVAS ══════ */
+    #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+    /* ══════ TOUCH SPARKS ══════ */
+    .spark{
+      position:fixed;pointer-events:none;z-index:9999;
+      width:10px;height:10px;border-radius:50%;
+      animation:sparkfly .7s ease-out forwards;
+    }
+    @keyframes sparkfly{
+      0%{opacity:1;transform:scale(1) translate(0,0)}
+      100%{opacity:0;transform:scale(0) translate(var(--tx),var(--ty))}
+    }
+    .wand-trail{
+      position:fixed;pointer-events:none;z-index:9998;
+      animation:wandpop .6s ease-out forwards;
+      filter:drop-shadow(0 0 8px rgba(124,58,255,.8));
+    }
+    @keyframes wandpop{
+      0%{opacity:1;transform:scale(0) rotate(-20deg)}
+      40%{opacity:1;transform:scale(1.4) rotate(10deg)}
+      100%{opacity:0;transform:scale(0.5) rotate(30deg) translateY(-40px)}
+    }
+
+    /* ══════ NAV ══════ */
+    nav{
+      position:fixed;top:0;left:0;width:100%;z-index:200;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 5vw;height:70px;
+      background:rgba(6,10,31,0.85);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-brand{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.9rem;letter-spacing:.14em;
+      background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      text-decoration:none;
+    }
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{
+      font-family:'Space Mono',monospace;font-size:.65rem;
+      letter-spacing:.16em;text-transform:uppercase;
+      color:var(--text);text-decoration:none;transition:color .2s;
+    }
+    .nav-links a:hover{color:var(--cyan)}
+    .nav-cta{
+      font-family:'Nunito',sans-serif;font-size:.82rem;
+      font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+      text-decoration:none;padding:.5rem 1.4rem;
+      background:linear-gradient(135deg,var(--violet),var(--purple));
+      color:#fff;border-radius:50px;
+      box-shadow:0 0 18px rgba(124,58,255,.5);
+      transition:transform .2s,box-shadow .2s;
+    }
+    .nav-cta:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(124,58,255,.8)}
+
+    /* ══════ FLOATING IMAGES ══════ */
+    .float-icon{
+      position:absolute;pointer-events:none;z-index:1;
+      width:var(--sz,60px);height:var(--sz,60px);
+      opacity:.28;
+      object-fit:contain;
+      filter:drop-shadow(0 0 12px rgba(124,58,255,.5));
+      animation:floatY var(--dur,8s) ease-in-out infinite alternate;
+      animation-delay:var(--del,0s);
+    }
+    @keyframes floatY{
+      0%{transform:translateY(0) rotate(var(--r0,0deg))}
+      100%{transform:translateY(-28px) rotate(var(--r1,12deg))}
+    }
+
+    /* ══════ HERO ══════ */
+    .hero{
+      position:relative;z-index:10;
+      min-height:100vh;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      text-align:center;
+      padding:110px 5vw 90px;
+      overflow:hidden;
+    }
+    .orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+    .orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,255,.5) 0%,transparent 70%);top:-200px;left:-150px;animation:drift1 14s ease-in-out infinite alternate}
+    .orb-2{width:550px;height:550px;background:radial-gradient(circle,rgba(0,212,255,.3) 0%,transparent 70%);top:25%;right:-130px;animation:drift2 16s ease-in-out infinite alternate}
+    .orb-3{width:450px;height:450px;background:radial-gradient(circle,rgba(255,45,247,.25) 0%,transparent 70%);bottom:-100px;left:25%;animation:drift3 11s ease-in-out infinite alternate}
+    @keyframes drift1{to{transform:translate(70px,50px)}}
+    @keyframes drift2{to{transform:translate(-60px,70px)}}
+    @keyframes drift3{to{transform:translate(50px,-60px)}}
+
+    /* big glass sphere */
+    .sphere-hero{
+      position:absolute;left:4%;top:25%;
+      width:200px;height:200px;border-radius:50%;
+      background:radial-gradient(circle at 35% 32%,rgba(220,200,255,.95),rgba(124,58,255,.6) 42%,rgba(26,42,255,.2) 72%,transparent);
+      box-shadow:0 0 70px rgba(124,58,255,.55),inset 0 0 50px rgba(200,170,255,.12);
+      animation:bob 7s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .sphere-sm{
+      position:absolute;right:6%;top:16%;
+      width:80px;height:80px;border-radius:50%;
+      background:radial-gradient(circle at 35% 32%,rgba(180,240,255,.9),rgba(0,212,255,.55) 45%,rgba(26,42,255,.2) 70%,transparent);
+      box-shadow:0 0 35px rgba(0,212,255,.5);
+      animation:bob 9s ease-in-out infinite reverse;
+      pointer-events:none;
+    }
+    @keyframes bob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(4deg)}}
+
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      background:rgba(124,58,255,.18);
+      border:1px solid rgba(124,58,255,.45);
+      border-radius:50px;
+      padding:.4rem 1.2rem;
+      font-family:'Space Mono',monospace;font-size:.65rem;
+      letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);
+      margin-bottom:1.6rem;position:relative;z-index:2;
+    }
+    .hero-badge .live-dot{
+      width:7px;height:7px;border-radius:50%;background:var(--cyan);
+      box-shadow:0 0 8px var(--cyan);
+      animation:pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+
+    .hero-title{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(3.8rem,10vw,10rem);
+      letter-spacing:.04em;line-height:.88;
+      margin-bottom:1.6rem;
+      position:relative;z-index:2;
+    }
+    .gt1{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block}
+    .gt2{background:linear-gradient(90deg,var(--violet),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block}
+    .gt3{color:#fff;display:block;text-shadow:0 0 40px rgba(124,58,255,.4)}
+
+    .hero-sub{
+      max-width:560px;margin:0 auto 2.8rem;
+      font-size:1.12rem;line-height:1.85;color:var(--text);
+      position:relative;z-index:2;font-weight:600;
+    }
+    .hero-sub strong{color:#fff;font-weight:900}
+
+    .hero-scroll{
+      position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:.4rem;z-index:10;
+    }
+    .hero-scroll span{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text)}
+    .scroll-dots{display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:.3rem}
+    .scroll-dots span{width:4px;height:4px;border-radius:50%;background:var(--violet);animation:scrolldot 1.5s ease-in-out infinite}
+    .scroll-dots span:nth-child(2){animation-delay:.2s}
+    .scroll-dots span:nth-child(3){animation-delay:.4s}
+    @keyframes scrolldot{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+
+    /* ══════ STATS STRIP ══════ */
+    .stats-strip{
+      position:relative;z-index:10;
+      padding:50px 5vw;
+      background:linear-gradient(90deg,rgba(124,58,255,.14),rgba(0,212,255,.08),rgba(124,58,255,.12));
+      border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap;text-align:center;
+    }
+    .stat-item .sn{
+      font-family:'Bebas Neue',sans-serif;font-size:3.8rem;
+      background:linear-gradient(135deg,var(--cyan),var(--violet));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      line-height:1;
+    }
+    .stat-item .sl{font-size:.78rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+    .stat-div{width:1px;height:55px;background:var(--border)}
+
+    /* ══════ SERVICE SECTIONS ══════ */
+    section.svc{
+      position:relative;z-index:10;
+      min-height:88vh;
+      display:grid;grid-template-columns:1fr 1fr;
+      align-items:center;padding:90px 5vw;gap:4.5rem;
+      border-bottom:1px solid var(--border);overflow:hidden;
+    }
+    section.svc.rev{direction:rtl}
+    section.svc.rev>*{direction:ltr}
+
+    /* section bg blobs */
+    .svc::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0}
+    .s1::before{background:radial-gradient(ellipse 50% 65% at 90% 50%,rgba(0,212,255,.09) 0%,transparent 70%)}
+    .s2::before{background:radial-gradient(ellipse 50% 65% at 10% 50%,rgba(124,58,255,.12) 0%,transparent 70%)}
+    .s3::before{background:radial-gradient(ellipse 50% 65% at 90% 50%,rgba(255,45,247,.09) 0%,transparent 70%)}
+    .s4::before{background:radial-gradient(ellipse 50% 65% at 10% 50%,rgba(0,255,179,.09) 0%,transparent 70%)}
+
+    .svc-text{position:relative;z-index:2}
+    .svc-visual{position:relative;z-index:2;display:flex;align-items:center;justify-content:center}
+
+    /* badge pill */
+    .svc-pill{
+      display:inline-flex;align-items:center;gap:.5rem;
+      border-radius:50px;padding:.35rem 1.1rem;
+      font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+      margin-bottom:1.4rem;border:1.5px solid;
+    }
+    .svc-pill.cp{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.1)}
+    .svc-pill.vp{border-color:var(--violet);color:var(--violet);background:rgba(124,58,255,.12)}
+    .svc-pill.pp{border-color:var(--pink);color:var(--pink);background:rgba(255,45,247,.1)}
+    .svc-pill.gp{border-color:var(--green);color:var(--green);background:rgba(0,255,179,.08)}
+    .pill-dot{width:7px;height:7px;border-radius:50%;animation:pulse 1.8s ease-in-out infinite}
+    .cp .pill-dot{background:var(--cyan);box-shadow:0 0 7px var(--cyan)}
+    .vp .pill-dot{background:var(--violet);box-shadow:0 0 7px var(--violet)}
+    .pp .pill-dot{background:var(--pink);box-shadow:0 0 7px var(--pink)}
+    .gp .pill-dot{background:var(--green);box-shadow:0 0 7px var(--green)}
+
+    .svc-title{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2.8rem,5vw,5rem);
+      letter-spacing:.04em;line-height:.9;margin-bottom:1.3rem;
+    }
+    .gc{background:linear-gradient(90deg,var(--cyan),#00a8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .gv{background:linear-gradient(90deg,var(--violet),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .gp2{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .gg{background:linear-gradient(90deg,#00c896,var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    .svc-desc{
+      font-size:1.02rem;line-height:1.88;
+      color:var(--text);margin-bottom:2rem;
+      max-width:460px;font-weight:600;
+    }
+    .svc-desc strong{color:#fff;font-weight:900}
+
+    /* tag chips */
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
+    .chip{
+      font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+      padding:.32rem .9rem;border-radius:50px;border:1.5px solid;
+    }
+    .chip-c{border-color:rgba(0,212,255,.5);color:var(--cyan);background:rgba(0,212,255,.08)}
+    .chip-v{border-color:rgba(124,58,255,.5);color:#c4a3ff;background:rgba(124,58,255,.1)}
+    .chip-p{border-color:rgba(255,45,247,.5);color:var(--pink);background:rgba(255,45,247,.08)}
+    .chip-g{border-color:rgba(0,255,179,.5);color:var(--green);background:rgba(0,255,179,.06)}
+
+    /* ══════ BUTTONS ══════ */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+      font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:900;
+      letter-spacing:.05em;text-transform:uppercase;text-decoration:none;
+      padding:1rem 2.2rem;border-radius:50px;border:none;cursor:pointer;
+      position:relative;overflow:hidden;
+      transition:transform .22s,box-shadow .22s;
+    }
+    .btn::before{
+      content:'';position:absolute;inset:0;border-radius:50px;
+      background:rgba(255,255,255,.12);opacity:0;
+      transition:opacity .2s;
+    }
+    .btn:active::before{opacity:1}
+    .btn:active{transform:scale(.96)!important}
+    .btn:hover{transform:translateY(-3px) scale(1.03)}
+
+    .btn-c{background:linear-gradient(135deg,#0050cc,var(--cyan));color:#fff;box-shadow:0 0 28px rgba(0,212,255,.45),0 4px 20px rgba(0,100,200,.4)}
+    .btn-c:hover{box-shadow:0 0 45px rgba(0,212,255,.7),0 6px 25px rgba(0,100,200,.5)}
+    .btn-v{background:linear-gradient(135deg,var(--violet),var(--purple));color:#fff;box-shadow:0 0 28px rgba(124,58,255,.5),0 4px 20px rgba(100,0,200,.35)}
+    .btn-v:hover{box-shadow:0 0 45px rgba(124,58,255,.8),0 6px 25px rgba(100,0,200,.5)}
+    .btn-p{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 0 28px rgba(255,45,247,.45),0 4px 20px rgba(180,0,180,.35)}
+    .btn-p:hover{box-shadow:0 0 45px rgba(255,45,247,.7)}
+    .btn-g{background:linear-gradient(135deg,#00c896,var(--green));color:#021a14;box-shadow:0 0 28px rgba(0,255,179,.45),0 4px 20px rgba(0,180,100,.3)}
+    .btn-g:hover{box-shadow:0 0 45px rgba(0,255,179,.7)}
+
+    /* pulse ring on button */
+    .btn-ring{
+      position:relative;
+    }
+    .btn-ring::after{
+      content:'';position:absolute;inset:-4px;border-radius:50px;
+      border:2px solid;opacity:0;
+      animation:ringpulse 2.5s ease-in-out infinite;
+    }
+    .btn-c.btn-ring::after{border-color:var(--cyan)}
+    .btn-v.btn-ring::after{border-color:var(--violet)}
+    .btn-p.btn-ring::after{border-color:var(--pink)}
+    .btn-g.btn-ring::after{border-color:var(--green)}
+    @keyframes ringpulse{0%,100%{opacity:0;transform:scale(1)}50%{opacity:.5;transform:scale(1.06)}}
+
+    /* ══════ SERVICE VISUAL CARDS ══════ */
+    .vis-card{
+      width:100%;max-width:400px;
+      background:linear-gradient(145deg,rgba(20,15,55,.9),rgba(10,8,35,.95));
+      border:1.5px solid var(--border);
+      border-radius:28px;
+      padding:2.8rem 2.4rem;
+      position:relative;overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(124,58,255,.1);
+    }
+    .vis-card::before{
+      content:'';position:absolute;top:-2px;left:20px;right:20px;height:3px;
+      border-radius:0 0 4px 4px;
+    }
+    .vc-c::before{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+    .vc-v::before{background:linear-gradient(90deg,var(--violet),var(--purple))}
+    .vc-p::before{background:linear-gradient(90deg,var(--purple),var(--pink))}
+    .vc-g::before{background:linear-gradient(90deg,#00c896,var(--green))}
+
+    /* card glow ring */
+    .vis-card::after{
+      content:'';position:absolute;inset:-1px;border-radius:28px;
+      background:linear-gradient(135deg,rgba(124,58,255,.2),transparent,rgba(0,212,255,.15));
+      pointer-events:none;
+    }
+    .card-icon{width:90px;height:90px;margin-bottom:1.2rem;display:block;object-fit:contain;animation:iconbob 4s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(124,58,255,.65))}
+    @keyframes iconbob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-10px) scale(1.07)}}
+    .vis-card h4{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:.05em;color:#fff;margin-bottom:.7rem}
+    .vis-card p{font-size:.92rem;color:var(--text);line-height:1.7;font-weight:600}
+
+    /* decorative glow blob inside card */
+    .card-blob{
+      position:absolute;bottom:-50px;right:-50px;
+      width:140px;height:140px;border-radius:50%;
+      filter:blur(35px);opacity:.4;pointer-events:none;
+    }
+    .cb-c{background:var(--cyan)}
+    .cb-v{background:var(--violet)}
+    .cb-p{background:var(--pink)}
+    .cb-g{background:var(--green)}
+
+    /* floating mini icons on cards (imágenes) */
+    .card-float{
+      position:absolute;top:1.4rem;right:1.6rem;
+      width:38px;height:38px;object-fit:contain;opacity:.32;
+      animation:floatY 5s ease-in-out infinite alternate;
+      --r0:-6deg;--r1:8deg;
+    }
+
+    /* ══════ SOCIAL SECTION ══════ */
+    .social-sec{
+      position:relative;z-index:10;
+      padding:90px 5vw;text-align:center;
+      background:linear-gradient(160deg,rgba(124,58,255,.1),rgba(0,212,255,.06),rgba(255,45,247,.07));
+      border-top:1px solid var(--border);
+    }
+    .social-sec .badge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      background:rgba(124,58,255,.18);border:1px solid rgba(124,58,255,.4);
+      border-radius:50px;padding:.35rem 1.1rem;
+      font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);
+      margin-bottom:1rem;
+    }
+    .social-sec h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);letter-spacing:.05em;margin-bottom:.8rem}
+    .social-sec>p{color:var(--text);max-width:480px;margin:0 auto 3rem;font-size:1rem;line-height:1.75;font-weight:600}
+
+    .social-grid{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:1.1rem;margin-bottom:2.5rem}
+    .soc-btn{
+      display:inline-flex;align-items:center;gap:.7rem;
+      font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;
+      letter-spacing:.04em;text-transform:uppercase;text-decoration:none;
+      padding:.85rem 1.7rem;border-radius:50px;
+      color:#fff;border:1.5px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.06);
+      backdrop-filter:blur(10px);
+      transition:transform .2s,box-shadow .2s,border-color .2s,background .2s;
+    }
+    .soc-btn:active{transform:scale(.96)}
+    .soc-btn:hover{transform:translateY(-3px)}
+    .soc-btn .si{font-size:1.25rem}
+    .sb-fb:hover{border-color:#1877f2;background:rgba(24,119,242,.2);box-shadow:0 0 20px rgba(24,119,242,.35)}
+    .sb-tt:hover{border-color:#ff0050;background:rgba(255,0,80,.15);box-shadow:0 0 20px rgba(255,0,80,.35)}
+    .sb-ig:hover{border-color:#e1306c;background:rgba(225,48,108,.15);box-shadow:0 0 20px rgba(225,48,108,.3)}
+    .sb-yt:hover{border-color:#ff0000;background:rgba(255,0,0,.15);box-shadow:0 0 20px rgba(255,0,0,.3)}
+    .sb-wa:hover{border-color:#25d366;background:rgba(37,211,102,.15);box-shadow:0 0 20px rgba(37,211,102,.3)}
+
+    /* ══════ FOOTER ══════ */
+    footer{
+      position:relative;z-index:10;
+      padding:50px 5vw 30px;
+      border-top:1px solid var(--border);
+      display:flex;flex-wrap:wrap;gap:2rem;
+      justify-content:space-between;align-items:center;
+    }
+    .fb{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.12em;background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .fsub{font-size:.72rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+    footer nav{display:flex;flex-wrap:wrap;gap:1.5rem}
+    footer nav a{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text);text-decoration:none;transition:color .2s}
+    footer nav a:hover{color:var(--cyan)}
+    .fcopy{font-size:.72rem;font-weight:700;color:var(--text)}
+
+    /* ══════ REVEAL ══════ */
+    .rev{opacity:0;transform:translateY(45px);transition:opacity .75s ease,transform .75s ease}
+    .rev.on{opacity:1;transform:none}
+    .revl{opacity:0;transform:translateX(-45px);transition:opacity .75s ease,transform .75s ease}
+    .revl.on{opacity:1;transform:none}
+    .revr{opacity:0;transform:translateX(45px);transition:opacity .75s ease,transform .75s ease}
+    .revr.on{opacity:1;transform:none}
+
+    /* ══════ RESPONSIVE ══════ */
+    @media(max-width:900px){
+      section.svc{grid-template-columns:1fr;min-height:unset;gap:2.5rem;padding:70px 5vw}
+      section.svc.rev{direction:ltr}
+      .nav-links{display:none}
+      .sphere-hero{width:110px;height:110px;left:2%}
+      .sphere-sm{width:55px;height:55px;right:3%}
+      .stat-div{display:none}
+    }
+    @media(max-width:520px){
+      .hero-title{font-size:3.6rem}
+      .svc-title{font-size:2.6rem}
+      .vis-card{padding:2rem 1.6rem}
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="home.html">PC REVIVE<img src="logo.png" alt="" style="width:70px;height:70px;object-fit:contain;vertical-align:middle"></a>
+  <ul class="nav-links">
+    <li><a href="#plataforma">Plataforma</a></li>
+    <li><a href="#reparacion">Reparación</a></li>
+    <li><a href="#camaras">Cámaras</a></li>
+    <li><a href="#biometrico">Biométricos</a></li>
+    <li><a href="#redes">Contacto</a></li>
+  </ul>
+  <a class="nav-cta" href="contacto.html">Contáctanos →</a>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="sphere-hero"></div>
+  <div class="sphere-sm"></div>
+
+  <!-- ✏️ IMÁGENES FLOTANTES — reemplaza cada src="img/floatX.png" con tu imagen real -->
+  <img class="float-icon" src="1.png" alt="" style="left:12%;top:15%;--sz:65px;--dur:9s;--del:0s;--r0:-8deg;--r1:8deg">
+  <img class="float-icon" src="2.png" alt="" style="left:80%;top:20%;--sz:55px;--dur:7s;--del:1s;--r0:5deg;--r1:-10deg">
+  <img class="float-icon" src="3.png" alt="" style="left:88%;top:60%;--sz:70px;--dur:11s;--del:0.5s;--r0:-5deg;--r1:12deg">
+  <img class="float-icon" src="1.png" alt="" style="left:5%;top:70%;--sz:60px;--dur:8s;--del:2s;--r0:10deg;--r1:-5deg">
+  <img class="float-icon" src="2.png" alt="" style="left:50%;top:8%;--sz:50px;--dur:10s;--del:1.5s;--r0:-3deg;--r1:8deg">
+  <img class="float-icon" src="3.png" alt="" style="left:65%;top:75%;--sz:65px;--dur:6s;--del:0.8s;--r0:6deg;--r1:-9deg">
+  <img class="float-icon" src="1.png" alt="" style="left:25%;top:82%;--sz:58px;--dur:12s;--del:3s;--r0:-6deg;--r1:6deg">
+  <img class="float-icon" src="3.png" alt="" style="left:38%;top:12%;--sz:62px;--dur:8.5s;--del:2.2s;--r0:4deg;--r1:-12deg">
+
+  <div class="hero-badge rev"><span class="live-dot"></span>Bolivia — Tecnología Educativa</div>
+
+  <h1 class="hero-title rev">
+    <span class="gt1">Soluciones</span>
+    <span class="gt2">Digitales</span>
+    <span class="gt3">para Bolivia</span>
+  </h1>
+
+  <p class="hero-sub rev">
+    Desde <strong>herramientas para docentes</strong> hasta <strong>sistemas de seguridad</strong> para colegios — tecnología moderna al alcance de todos los profesores bolivianos.
+  </p>
+
+  <div class="hero-scroll">
+    <span>Descubre todo lo que hacemos</span>
+    <div class="scroll-dots"><span></span><span></span><span></span></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item rev"><div class="sn">4+</div><div class="sl">Servicios activos</div></div>
+  <div class="stat-div"></div>
+  <div class="stat-item rev"><div class="sn">BOL</div><div class="sl">Hecho en Bolivia</div></div>
+  <div class="stat-div"></div>
+  <div class="stat-item rev"><div class="sn">IA</div><div class="sl">Tecnología avanzada</div></div>
+  <div class="stat-div"></div>
+  <div class="stat-item rev"><div class="sn">24/7</div><div class="sl">Siempre disponible</div></div>
+</div>
+
+<!-- ═══ SVC 1: PLATAFORMA ═══ -->
+<section class="svc s1" id="plataforma">
+  <div class="svc-text revl">
+    <div class="svc-pill cp"><span class="pill-dot"></span>Plataforma educativa</div>
+    <h2 class="svc-title">PC Revive<br><span class="gc">Educación</span></h2>
+    <p class="svc-desc">
+      La plataforma digital creada <strong>por docentes bolivianos, para docentes bolivianos</strong>. Herramientas interactivas de física, química y matemáticas, más recursos pedagógicos con Inteligencia Artificial.
+    </p>
+    <div class="chips">
+      <span class="chip chip-c">Física</span>
+      <span class="chip chip-c">Química</span>
+      <span class="chip chip-c">Matemáticas</span>
+      <span class="chip chip-c">IA educativa</span>
+      <span class="chip chip-c">Primaria &amp; Secundaria</span>
+    </div>
+    <a class="btn btn-c btn-ring" href="https://64f93584.pc-revive.pages.dev/" target="_blank" rel="noopener"><img src="plataforma.png" alt="" style="width:22px;height:22px;object-fit:contain;vertical-align:middle"> Ir a la plataforma</a>
+  </div>
+  <div class="svc-visual revr">
+    <div class="vis-card vc-c">
+      <!-- ✏️ icon1-mini.png = ícono pequeño esquina | icon1-main.png = ícono grande -->
+      <img class="card-float" src="plataforma.png" alt="">
+      <img class="card-icon" src="plataforma.png" alt="">
+      <h4>Plataforma para el Docente Moderno</h4>
+      <p>Simuladores, calculadoras gráficas, tabla periódica interactiva y guías con IA. Gratis para docentes de Bolivia.</p>
+      <div class="card-blob cb-c"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SVC 2: REPARACIÓN ═══ -->
+<section class="svc s2 rev" id="reparacion">
+  <div class="svc-text revr">
+    <div class="svc-pill vp"><span class="pill-dot"></span>Servicio técnico</div>
+    <h2 class="svc-title">Reparación de<br><span class="gv">Computadoras</span></h2>
+    <p class="svc-desc">
+      <strong>Diagnóstico, reparación y mantenimiento</strong> de laptops y PCs Trabajamos con el programa gubernamental para colegios y brindamos soporte técnico rápido.
+    </p>
+    <div class="chips">
+      <span class="chip chip-v">Mantenimiento preventivo</span>
+      <span class="chip chip-v">Cambio de piezas</span>
+      <span class="chip chip-v">Recuperación de datos</span>
+      <span class="chip chip-v">Programa del gobierno</span>
+    </div>
+    <a class="btn btn-v btn-ring" href="reparacion.html"><img src="reparacion.png" alt="" style="width:22px;height:22px;object-fit:contain;vertical-align:middle"> Ver servicio completo</a>
+  </div>
+  <div class="svc-visual revl">
+    <div class="vis-card vc-v">
+      <!-- ✏️ icon2-mini.png | icon2-main.png -->
+      <img class="card-float" src="reparacion.png" alt="">
+      <img class="card-icon" src="reparacion.png" alt="">
+      <h4>Diagnóstico y Reparación Express</h4>
+      <p>Equipo reparado por técnicos especializados. Servicio a domicilio para instituciones educativas en toda Bolivia.</p>
+      <div class="card-blob cb-v"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SVC 3: CÁMARAS ═══ -->
+<section class="svc s3" id="camaras">
+  <div class="svc-text revl">
+    <div class="svc-pill pp"><span class="pill-dot"></span>Seguridad y vigilancia</div>
+    <h2 class="svc-title">Instalación de<br><span class="gp2">Cámaras</span></h2>
+    <p class="svc-desc">
+      Instalamos sistemas de <strong>videovigilancia CCTV e IP</strong> para colegios y negocios en Chuquisaca por ahora. Monitoreo en tiempo real desde tu celular, las 24 horas del día.
+    </p>
+    <div class="chips">
+      <span class="chip chip-p">CCTV HD</span>
+      <span class="chip chip-p">IP / WiFi</span>
+      <span class="chip chip-p">Acceso móvil</span>
+      <span class="chip chip-p">Interior &amp; Exterior</span>
+      <span class="chip chip-p">Para colegios</span>
+    </div>
+    <a class="btn btn-p btn-ring" href="camaras.html"><img src="camaras.png" alt="" style="width:22px;height:22px;object-fit:contain;vertical-align:middle"> Ver servicio completo</a>
+  </div>
+  <div class="svc-visual revr">
+    <div class="vis-card vc-p">
+      <!-- ✏️ icon3-mini.png | icon3-main.png -->
+      <img class="card-float" src="camaras.png" alt="">
+      <img class="card-icon" src="camaras.png" alt="">
+      <h4>Vigilancia Inteligente para tu Colegio</h4>
+      <p>Cámaras HD con grabación continua, alertas en tiempo real y acceso remoto desde cualquier dispositivo.</p>
+      <div class="card-blob cb-p"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SVC 4: BIOMÉTRICO ═══ -->
+<section class="svc s4 rev" id="biometrico">
+  <div class="svc-text revr">
+    <div class="svc-pill gp"><span class="pill-dot"></span>Control de asistencia</div>
+    <h2 class="svc-title">Biométricos &amp;<br><span class="gg">Registro Docente</span></h2>
+    <p class="svc-desc">
+      Lectores de <strong>huella dactilar para colegios</strong> más un sistema donde los profesores registran sus <strong>contenidos, asistencia y planificaciones</strong> digitalmente cada día.
+    </p>
+    <div class="chips">
+      <span class="chip chip-g">Huella dactilar</span>
+      <span class="chip chip-g">Control de acceso</span>
+      <span class="chip chip-g">Registro docente</span>
+      <span class="chip chip-g">Contenidos de clase</span>
+      <span class="chip chip-g">Reportes automáticos</span>
+    </div>
+    <a class="btn btn-g btn-ring" href="biometrico.html"><img src="bio.png" alt="" style="width:22px;height:22px;object-fit:contain;vertical-align:middle"> Ver sistema completo</a>
+  </div>
+  <div class="svc-visual revl">
+    <div class="vis-card vc-g">
+      <!-- ✏️ icon4-mini.png | icon4-main.png -->
+      <img class="card-float" src="bio.png" alt="">
+      <img class="card-icon" src="bio.png" alt="">
+      <h4>Sistema de Control para Colegios</h4>
+      <p>Huella dactilar para ingreso más plataforma donde docentes registran contenidos y planificaciones en tiempo real.</p>
+      <div class="card-blob cb-g"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REDES SOCIALES ═══ -->
+<section class="social-sec" id="redes">
+  <div class="badge rev">
+    <span class="logo-txt">TU<span class="logo-accent">LOGO</span></span>
+    Síguenos y contáctanos
+  </div>
+  <h2 class="rev">Estamos en todas<br>las plataformas</h2>
+  <p class="rev">Síguenos para ver proyectos, tutoriales y novedades. También puedes escribirnos directamente por WhatsApp para una atención más rápida.</p>
+  <div class="social-grid rev">
+    <a class="soc-btn sb-fb" href="#" target="_blank"><img src="face.png" alt="" style="width:22px;height:22px;object-fit:contain">Facebook</a>
+    <a class="soc-btn sb-tt" href="#" target="_blank"><img src="tik.png" alt="" style="width:22px;height:22px;object-fit:contain">TikTok</a>
+    <a class="soc-btn sb-yt" href="#" target="_blank"><img src="you.png" alt="" style="width:22px;height:22px;object-fit:contain">YouTube</a>
+    <a class="soc-btn sb-wa" href="https://wa.me/59174412748" target="_blank"><img src="w.png" alt="" style="width:22px;height:22px;object-fit:contain">WhatsApp</a>
+  </div>
+  <a class="btn btn-v btn-ring rev" href="https://wa.me/59174412748" target="_blank"><img src="w.png" alt="" style="width:22px;height:22px;object-fit:contain;vertical-align:middle"> Enviar mensaje directo</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="fb">PC REVIVE</div>
+    <div class="fsub">Soluciones tecnológicas — Bolivia</div>
+  </div>
+  <nav>
+    <a href="https://64f93584.pc-revive.pages.dev/" target="_blank">Plataforma Educativa</a>
+    <a href="mantenimiento.html">Reparación PC</a>
+    <a href="camaras.html">Cámaras</a>
+    <a href="biometrico.html">Biométricos</a>
+    <a href="galeria.html">Galería</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
+  <div class="fcopy">© 2025 PC Revive — Hecho en Bolivia</div>
+</footer>
+
+<script>
+// ══ PARTICLE CANVAS ══
+(function(){
+  const cv=document.getElementById('bg-canvas');
+  const ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<65;i++)pts.push({
+    x:Math.random()*W,y:Math.random()*H,
+    vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,
+    r:Math.random()*1.6+.5,
+    hue:Math.random()>0.5?255:290
+  });
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${p.hue},85%,72%,0.55)`;ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<130){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(124,58,255,${.18*(1-d/130)})`;ctx.lineWidth=.5;ctx.stroke()}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ══ TOUCH SPARK / WAND EFFECT ══
+// ✏️ Coloca tus imágenes en img/spark1.png ... spark8.png
+const SPARKS=['img/spark1.png','img/spark2.png','img/spark3.png','img/spark4.png','img/spark5.png','img/spark6.png','img/spark7.png','img/spark8.png'];
+const COLORS=['#00d4ff','#ff2df7','#7c3aff','#00ffb3','#ffdd00','#ff6b00'];
+
+function spawnWand(x,y){
+  // image pop
+  const e=document.createElement('img');
+  e.className='wand-trail';
+  e.src=SPARKS[Math.floor(Math.random()*SPARKS.length)];
+  e.style.cssText=`left:${x-20}px;top:${y-20}px;width:40px;height:40px;object-fit:contain`;
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),650);
+
+  // color sparks
+  for(let i=0;i<10;i++){
+    const s=document.createElement('div');
+    s.className='spark';
+    const angle=Math.random()*Math.PI*2;
+    const dist=30+Math.random()*60;
+    const tx=Math.cos(angle)*dist+'px';
+    const ty=Math.sin(angle)*dist+'px';
+    const color=COLORS[Math.floor(Math.random()*COLORS.length)];
+    const size=4+Math.random()*8;
+    s.style.cssText=`
+      left:${x-size/2}px;top:${y-size/2}px;
+      width:${size}px;height:${size}px;
+      background:${color};
+      box-shadow:0 0 ${size*2}px ${color};
+      --tx:${tx};--ty:${ty};
+      animation-duration:${0.5+Math.random()*0.4}s;
+    `;
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),900);
+  }
+}
+
+// Touch events (mobile first)
+document.addEventListener('touchstart',(e)=>{
+  const t=e.touches[0];
+  spawnWand(t.clientX,t.clientY);
+},{passive:true});
+
+// Also works on click for desktop testing
+document.addEventListener('click',(e)=>{
+  // only if not a link/button (avoid double-fire on tap)
+  if(e.target.tagName==='A'||e.target.tagName==='BUTTON')return;
+  spawnWand(e.clientX,e.clientY);
+});
+
+// ══ SCROLL REVEAL ══
+const all=document.querySelectorAll('.rev,.revl,.revr');
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach((en,i)=>{
+    if(en.isIntersecting){setTimeout(()=>en.target.classList.add('on'),i*85);obs.unobserve(en.target)}
+  });
+},{threshold:0.08});
+all.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

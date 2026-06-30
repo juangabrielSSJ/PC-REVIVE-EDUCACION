@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galería — PC Revive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --dark: #111111; --card: #181818;
+      --yellow: #f5e600; --white: #f0f0f0; --gray: #888;
+      --border: rgba(245,230,0,0.18);
+    }
+    body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 64px;
+      background: rgba(10,10,10,0.95); border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .12em; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--yellow); }
+    .nav-back { font-family: 'Space Mono', monospace; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--yellow); text-decoration: none; }
+
+    .page-hero { padding: 80px 5vw 60px; background: var(--dark); border-bottom: 1px solid var(--border); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--yellow); margin-bottom: 1rem; }
+    h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5.5rem); letter-spacing: .04em; line-height: .95; margin-bottom: 1.2rem; }
+    h1 span { color: var(--yellow); }
+    .hero-sub { color: #888; max-width: 560px; line-height: 1.75; font-size: .95rem; }
+
+    .content { padding: 80px 5vw; }
+
+    .gallery-note {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 1.5rem 2rem; margin-bottom: 3rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .gallery-note span { font-size: 1.5rem; }
+    .gallery-note p { color: #888; font-size: .88rem; line-height: 1.6; }
+    .gallery-note p strong { color: var(--yellow); }
+
+    .masonry {
+      columns: 3; column-gap: 1rem;
+    }
+    .photo-slot {
+      break-inside: avoid;
+      background: var(--card); border: 2px dashed var(--border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: .5rem; color: var(--gray);
+      font-family: 'Space Mono', monospace; font-size: .65rem; letter-spacing: .1em; text-align: center;
+      padding: 2rem 1rem; margin-bottom: 1rem;
+    }
+    .photo-slot .icon { font-size: 2.5rem; }
+    .photo-slot.tall { min-height: 260px; }
+    .photo-slot.short { min-height: 160px; }
+    .photo-slot.medium { min-height: 200px; }
+
+    .caption { font-family: 'Space Mono', monospace; font-size: .6rem; letter-spacing: .08em; color: var(--gray); margin-top: .4rem; }
+
+    h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: .05em; margin-bottom: 2rem; }
+
+    .testimonials { margin-top: 5rem; }
+    .test-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+    .test-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; }
+    .test-card p { color: #bbb; font-size: .88rem; line-height: 1.7; font-style: italic; margin-bottom: 1.2rem; }
+    .test-author { font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: .1em; color: var(--yellow); text-transform: uppercase; }
+
+    .btn-back { display: inline-flex; align-items: center; gap: .5rem; background: var(--yellow); color: var(--black); font-family: 'Space Mono', monospace; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; padding: .9rem 1.8rem; margin-top: 3rem; }
+
+    @media (max-width: 860px) {
+      .masonry { columns: 2; }
+      .test-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) {
+      .masonry { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><span>PC</span> REVIVE</a>
+  <a class="nav-back" href="index.html">← Volver</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Evidencia visual</div>
+  <h1>Galería de<br><span>Proyectos</span></h1>
+  <p class="hero-sub">Registro fotográfico de nuestras actividades, talleres de mantenimiento, capacitaciones y el trabajo con docentes bolivianos.</p>
+</div>
+
+<div class="content">
+  <div class="gallery-note">
+    <span>📷</span>
+    <p><strong>Cómo agregar tus fotos:</strong> Reemplaza los recuadros de abajo con etiquetas &lt;img&gt; que apunten a tus imágenes reales. Puedes usar las fotos de los talleres, equipos atendidos, y actividades con docentes.</p>
+  </div>
+
+  <h2>Fotos del Proyecto</h2>
+  <div class="masonry">
+    <div class="photo-slot tall">
+      <div class="icon">🖥️</div>
+      <span>Taller de mantenimiento</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+    <div class="photo-slot short">
+      <div class="icon">👨‍🏫</div>
+      <span>Capacitación docente</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+    <div class="photo-slot medium">
+      <div class="icon">🔧</div>
+      <span>Reparación de equipo</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+    <div class="photo-slot short">
+      <div class="icon">🏫</div>
+      <span>Unidad educativa</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+    <div class="photo-slot tall">
+      <div class="icon">💻</div>
+      <span>Equipos en uso</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+    <div class="photo-slot medium">
+      <div class="icon">📚</div>
+      <span>Clase con tecnología</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+    <div class="photo-slot short">
+      <div class="icon">🤝</div>
+      <span>Trabajo en equipo</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+    <div class="photo-slot medium">
+      <div class="icon">⚙️</div>
+      <span>Componentes y hardware</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+    <div class="photo-slot short">
+      <div class="icon">🎓</div>
+      <span>Graduación / eventos</span>
+      <div class="caption">Agrega tu foto aquí</div>
+    </div>
+  </div>
+
+  <div class="testimonials">
+    <h2>Testimonios</h2>
+    <div class="test-grid">
+      <div class="test-card">
+        <p>"PC Revive nos ayudó a mantener los equipos del aula funcionando durante todo el año sin interrupciones."</p>
+        <div class="test-author">— Docente de Física, Cochabamba</div>
+      </div>
+      <div class="test-card">
+        <p>"Las herramientas digitales que ofrecen hacen mis clases de matemáticas mucho más dinámicas e interactivas."</p>
+        <div class="test-author">— Profesora de Secundaria, Bolivia</div>
+      </div>
+      <div class="test-card">
+        <p>"El servicio de mantenimiento con el programa del gobierno fue rápido y muy profesional. Recomendado."</p>
+        <div class="test-author">— Director de Unidad Educativa</div>
+      </div>
+    </div>
+  </div>
+
+  <a class="btn-back" href="index.html">← Volver al inicio</a>
+</div>
+</body>
+</html>

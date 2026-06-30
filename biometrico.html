@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biométricos & Registro Docente — PC Revive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--deep:#050818;--green:#00ffb3;--green2:#00c896;--cyan:#00d4ff;--violet:#6c2bff;--white:#f0f4ff;--gray:#8892b0;--card:rgba(255,255,255,0.04);--border:rgba(0,255,179,0.2)}
+    html{scroll-behavior:smooth}
+    body{background:var(--deep);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:64px;background:rgba(5,8,24,0.92);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+    .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.12em;background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-back{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);text-decoration:none}
+    .page-hero{padding:90px 5vw 70px;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(0,255,179,.08) 0%,transparent 70%);pointer-events:none}
+    .eyebrow{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--green);margin-bottom:1rem}
+    h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5.5rem);letter-spacing:.04em;line-height:.93;margin-bottom:1.2rem}
+    .grad-green{background:linear-gradient(90deg,var(--green2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-sub{color:var(--gray);max-width:580px;line-height:1.78;font-size:.97rem}
+    .hero-sub strong{color:var(--white)}
+    .content{padding:80px 5vw;max-width:1100px;margin:0 auto}
+    h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.05em;margin-bottom:1.8rem}
+    /* two-system layout */
+    .systems{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:5rem}
+    .sys-card{background:var(--card);border:1px solid var(--border);padding:2.5rem}
+    .sys-card h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.05em;margin-bottom:1.2rem}
+    .sys-card .sys-icon{font-size:3rem;margin-bottom:1rem;display:block;filter:drop-shadow(0 0 14px var(--green))}
+    .sys-card ul{list-style:none;margin-top:1rem}
+    .sys-card ul li{padding:.6rem 0;border-bottom:1px solid rgba(0,255,179,.1);font-size:.88rem;color:var(--gray);display:flex;align-items:flex-start;gap:.8rem;line-height:1.5}
+    .sys-card ul li::before{content:'→';color:var(--green);font-family:'Space Mono',monospace;flex-shrink:0}
+    /* registro docente table mockup */
+    .reg-preview{background:rgba(0,20,10,.5);border:1px solid var(--border);padding:1.8rem;margin-top:2rem;border-radius:2px}
+    .reg-preview h4{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green);margin-bottom:1.2rem}
+    .reg-row{display:grid;grid-template-columns:1.5fr 2fr 1fr;gap:1rem;padding:.7rem 0;border-bottom:1px solid rgba(0,255,179,.08);font-size:.82rem;color:var(--gray)}
+    .reg-row.header{color:var(--white);font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,255,179,.7)}
+    .status-ok{color:var(--green);font-family:'Space Mono',monospace;font-size:.7rem}
+    /* features */
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin-bottom:4rem}
+    .feat{background:var(--card);border:1px solid var(--border);padding:1.8rem;transition:border-color .2s}
+    .feat:hover{border-color:var(--green)}
+    .feat .fi{font-size:2rem;margin-bottom:.8rem;display:block}
+    .feat h4{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.05em;margin-bottom:.5rem}
+    .feat p{font-size:.84rem;color:var(--gray);line-height:1.6}
+    .cta-strip{background:linear-gradient(135deg,rgba(0,200,150,.1),rgba(0,255,179,.06));border:1px solid var(--border);padding:3rem;text-align:center;margin-top:3rem}
+    .cta-strip h3{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:.05em;margin-bottom:.8rem}
+    .cta-strip p{color:var(--gray);max-width:480px;margin:0 auto 2rem;line-height:1.7;font-size:.92rem}
+    .btn-g{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--green2),var(--green));color:#000;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:1rem 2rem;box-shadow:0 0 24px rgba(0,255,179,.4);transition:box-shadow .2s}
+    .btn-g:hover{box-shadow:0 0 40px rgba(0,255,179,.7)}
+    .btn-back{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--green2),var(--green));color:#000;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:.9rem 1.8rem;margin-top:3rem}
+    @media(max-width:740px){.systems{grid-template-columns:1fr}.reg-row{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="home.html">PC REVIVE</a>
+  <a class="nav-back" href="home.html">← Volver al inicio</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Control de acceso inteligente</div>
+  <h1>Biométricos &amp;<br><span class="grad-green">Registro Docente</span></h1>
+  <p class="hero-sub">Instalamos <strong>lectores biométricos de huella dactilar</strong> para el control de ingreso en colegios. Incluimos un sistema donde los <strong>profesores registran sus contenidos, asistencia y planificaciones</strong> de clase digitalmente.</p>
+</div>
+
+<div class="content">
+
+  <h2>Dos sistemas integrados</h2>
+  <div class="systems">
+    <!-- BIOMETRICO -->
+    <div class="sys-card">
+      <span class="sys-icon">🖐️</span>
+      <h3>Control Biométrico</h3>
+      <p style="color:var(--gray);font-size:.88rem;margin-bottom:.5rem">Lector de huella dactilar para el control de ingreso y salida del personal docente y administrativo del colegio.</p>
+      <ul>
+        <li>Registro de huella dactilar de todo el personal</li>
+        <li>Control de horario de entrada y salida</li>
+        <li>Alertas automáticas de tardanzas o ausencias</li>
+        <li>Reporte mensual de asistencia exportable</li>
+        <li>Sin tarjetas físicas — solo la huella</li>
+        <li>Compatible con sistema de nómina</li>
+      </ul>
+    </div>
+
+    <!-- REGISTRO PROFE -->
+    <div class="sys-card">
+      <span class="sys-icon">📋</span>
+      <h3>Registro de Contenidos</h3>
+      <p style="color:var(--gray);font-size:.88rem;margin-bottom:.5rem">Plataforma digital donde cada docente registra sus contenidos de clase, actividades y planificaciones del día.</p>
+      <ul>
+        <li>Panel personal para cada profesor</li>
+        <li>Registro diario de contenidos por materia</li>
+        <li>Historial de clases y planificaciones</li>
+        <li>Visible para dirección y supervisión</li>
+        <li>Descarga de reportes en PDF</li>
+        <li>Acceso desde celular o computadora</li>
+      </ul>
+      <!-- Preview mockup -->
+      <div class="reg-preview">
+        <h4>Vista previa — Registro del día</h4>
+        <div class="reg-row header">
+          <span>Docente</span><span>Contenido registrado</span><span>Estado</span>
+        </div>
+        <div class="reg-row">
+          <span>Prof. García</span><span>Cinemática — MRU y MRUV</span><span class="status-ok">✓ OK</span>
+        </div>
+        <div class="reg-row">
+          <span>Prof. Mamani</span><span>Tabla periódica — Metales</span><span class="status-ok">✓ OK</span>
+        </div>
+        <div class="reg-row">
+          <span>Prof. Flores</span><span>Ecuaciones cuadráticas</span><span class="status-ok">✓ OK</span>
+        </div>
+        <div class="reg-row">
+          <span>Prof. Quispe</span><span style="color:rgba(255,200,0,.7)">Pendiente de registrar…</span><span style="color:rgba(255,200,0,.7);font-size:.7rem">⏳</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>¿Para qué sirve exactamente?</h2>
+  <div class="features-grid">
+    <div class="feat">
+      <span class="fi">🏫</span>
+      <h4>Control en colegios</h4>
+      <p>El director sabe exactamente quién llegó, a qué hora, y qué contenidos dio cada docente ese día.</p>
+    </div>
+    <div class="feat">
+      <span class="fi">📊</span>
+      <h4>Reportes automáticos</h4>
+      <p>Genera reportes de asistencia y contenidos mensuales con un solo clic, listos para entregar a la dirección.</p>
+    </div>
+    <div class="feat">
+      <span class="fi">🔐</span>
+      <h4>Acceso seguro</h4>
+      <p>Cada docente tiene su cuenta personal. La dirección tiene vista completa de todos los registros.</p>
+    </div>
+    <div class="feat">
+      <span class="fi">📱</span>
+      <h4>Desde cualquier dispositivo</h4>
+      <p>El docente puede registrar sus contenidos desde el celular, tablet o computadora del colegio.</p>
+    </div>
+    <div class="feat">
+      <span class="fi">⏱️</span>
+      <h4>En tiempo real</h4>
+      <p>La dirección ve en tiempo real quién llegó y qué contenidos están siendo registrados ese día.</p>
+    </div>
+    <div class="feat">
+      <span class="fi">📁</span>
+      <h4>Historial completo</h4>
+      <p>Accede al historial de meses anteriores: qué se enseñó, quién lo registró y cuándo fue registrado.</p>
+    </div>
+  </div>
+
+  <div class="cta-strip">
+    <h3>¿Quieres este sistema en tu colegio?</h3>
+    <p>Hacemos visita técnica gratuita, instalación completa y capacitación a todo el personal. Contáctanos hoy.</p>
+    <a class="btn-g" href="contacto.html">Solicitar información →</a>
+  </div>
+
+  <a class="btn-back" href="home.html">← Volver al inicio</a>
+</div>
+</body>
+</html>

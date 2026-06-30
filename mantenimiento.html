@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mantenimiento PC — PC Revive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --dark: #111111; --card: #181818;
+      --yellow: #f5e600; --white: #f0f0f0; --gray: #888;
+      --border: rgba(245,230,0,0.18);
+    }
+    body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 64px;
+      background: rgba(10,10,10,0.95); border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .12em; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--yellow); }
+    .nav-back { font-family: 'Space Mono', monospace; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--yellow); text-decoration: none; }
+    .nav-back:hover { text-decoration: underline; }
+
+    .page-hero {
+      padding: 80px 5vw 60px;
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+    }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--yellow); margin-bottom: 1rem; }
+    h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5.5rem); letter-spacing: .04em; line-height: .95; margin-bottom: 1.2rem; }
+    h1 span { color: var(--yellow); }
+    .hero-sub { color: #888; max-width: 560px; line-height: 1.75; font-size: .95rem; }
+
+    .content { padding: 80px 5vw; max-width: 1100px; margin: 0 auto; }
+
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem; }
+    .info-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; }
+    .info-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: .06em; color: var(--yellow); margin-bottom: 1rem; }
+    .info-card ul { list-style: none; }
+    .info-card ul li { padding: .6rem 0; border-bottom: 1px solid var(--border); font-size: .88rem; color: #bbb; display: flex; align-items: center; gap: .8rem; }
+    .info-card ul li::before { content: '→'; color: var(--yellow); font-family: 'Space Mono', monospace; }
+
+    .photo-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: .05em; margin-bottom: 1.5rem; }
+    .photo-placeholder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 3rem; }
+    .photo-slot {
+      background: var(--card);
+      border: 2px dashed var(--border);
+      aspect-ratio: 4/3;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: .5rem;
+      color: var(--gray);
+      font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: .1em; text-align: center;
+      padding: 1rem;
+    }
+    .photo-slot .icon { font-size: 2rem; }
+
+    .gov-section {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      padding: 3rem;
+      margin-top: 3rem;
+    }
+    .gov-section h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .05em; color: var(--yellow); margin-bottom: 1rem; }
+    .gov-section p { color: #888; line-height: 1.75; font-size: .92rem; margin-bottom: 1.5rem; }
+    .gov-badges { display: flex; flex-wrap: wrap; gap: .8rem; }
+    .gov-badge { border: 1px solid var(--yellow); color: var(--yellow); font-family: 'Space Mono', monospace; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; padding: .4rem 1rem; }
+
+    .btn-back { display: inline-flex; align-items: center; gap: .5rem; background: var(--yellow); color: var(--black); font-family: 'Space Mono', monospace; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; padding: .9rem 1.8rem; margin-top: 3rem; }
+    .btn-back:hover { background: #fff176; }
+
+    @media (max-width: 700px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .photo-placeholder-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><span>PC</span> REVIVE</a>
+  <a class="nav-back" href="index.html">← Volver al inicio</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Servicio técnico</div>
+  <h1>Mantenimiento de<br><span>Computadoras</span></h1>
+  <p class="hero-sub">Servicio profesional de reparación y mantenimiento preventivo para equipos educativos, con apoyo del programa gubernamental de Bolivia.</p>
+</div>
+
+<div class="content">
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>Mantenimiento Preventivo</h3>
+      <ul>
+        <li>Limpieza interna de polvo y componentes</li>
+        <li>Actualización de controladores y sistema operativo</li>
+        <li>Diagnóstico de temperatura y rendimiento</li>
+        <li>Revisión de batería y fuente de poder</li>
+        <li>Aplicación de pasta térmica</li>
+        <li>Escaneo de virus y malware</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Reparación y Soporte</h3>
+      <ul>
+        <li>Reparación de pantallas y teclados</li>
+        <li>Recuperación de datos importantes</li>
+        <li>Instalación y configuración de software educativo</li>
+        <li>Solución de problemas de arranque</li>
+        <li>Cambio de disco duro por SSD</li>
+        <li>Ampliación de memoria RAM</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="photo-section">
+    <h2>Galería del Servicio</h2>
+    <p style="color:#888; margin-bottom:1.5rem; font-size:.9rem;">Aquí puedes agregar fotos reales de los equipos atendidos, talleres y el proceso de mantenimiento.</p>
+    <div class="photo-placeholder-grid">
+      <div class="photo-slot">
+        <div class="icon">📷</div>
+        <span>Agrega foto del<br>proceso de limpieza</span>
+      </div>
+      <div class="photo-slot">
+        <div class="icon">📷</div>
+        <span>Agrega foto del<br>equipo reparado</span>
+      </div>
+      <div class="photo-slot">
+        <div class="icon">📷</div>
+        <span>Agrega foto del<br>taller o espacio</span>
+      </div>
+      <div class="photo-slot">
+        <div class="icon">📷</div>
+        <span>Agrega foto de<br>componentes</span>
+      </div>
+      <div class="photo-slot">
+        <div class="icon">📷</div>
+        <span>Agrega foto del<br>equipo en uso</span>
+      </div>
+      <div class="photo-slot">
+        <div class="icon">📷</div>
+        <span>Agrega foto del<br>resultado final</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="gov-section">
+    <h3>Programa Gubernamental de Bolivia</h3>
+    <p>PC Revive trabaja en coordinación con el programa del gobierno boliviano de dotación y mantenimiento de equipos informáticos para instituciones educativas. Garantizamos que los equipos entregados a escuelas y colegios funcionen correctamente durante el año escolar.</p>
+    <p>Nuestro equipo de docentes técnicos está certificado para brindar soporte a los equipos distribuidos por el Estado, asegurando continuidad en el proceso educativo.</p>
+    <div class="gov-badges">
+      <div class="gov-badge">Programa Estatal</div>
+      <div class="gov-badge">Certificado</div>
+      <div class="gov-badge">Bolivia</div>
+      <div class="gov-badge">Educación Pública</div>
+    </div>
+  </div>
+
+  <a class="btn-back" href="index.html">← Volver al inicio</a>
+</div>
+</body>
+</html>

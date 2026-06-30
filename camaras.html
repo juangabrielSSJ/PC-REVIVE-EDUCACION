@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cámaras de Seguridad — PC Revive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--deep:#050818;--navy:#0a0f2e;--violet:#6c2bff;--purple:#9b1fff;--pink:#ff2df7;--cyan:#00d4ff;--white:#f0f4ff;--gray:#8892b0;--card:rgba(255,255,255,0.04);--border:rgba(255,45,247,0.2)}
+    html{scroll-behavior:smooth}
+    body{background:var(--deep);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:64px;background:rgba(5,8,24,0.92);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+    .nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.12em;background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-back{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);text-decoration:none}
+    .page-hero{padding:90px 5vw 70px;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(255,45,247,.1) 0%,transparent 70%);pointer-events:none}
+    .eyebrow{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--pink);margin-bottom:1rem}
+    h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5.5rem);letter-spacing:.04em;line-height:.93;margin-bottom:1.2rem}
+    .grad-pink{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-sub{color:var(--gray);max-width:560px;line-height:1.78;font-size:.97rem}
+    .hero-sub strong{color:var(--white)}
+    .content{padding:80px 5vw;max-width:1100px;margin:0 auto}
+    h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.05em;margin-bottom:1.8rem}
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5px;background:var(--border);border:1.5px solid var(--border);margin-bottom:4rem}
+    .c-card{background:var(--deep);padding:2.5rem 2rem;position:relative;overflow:hidden}
+    .c-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--pink));transform:scaleX(0);transition:transform .3s;transform-origin:left}
+    .c-card:hover::after{transform:scaleX(1)}
+    .c-icon{font-size:2.5rem;margin-bottom:1.2rem;display:block}
+    .c-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.05em;color:var(--white);margin-bottom:.7rem}
+    .c-card p{font-size:.87rem;color:var(--gray);line-height:1.65}
+    .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:4rem}
+    .photo-slot{background:var(--card);border:2px dashed rgba(255,45,247,.2);aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;color:var(--gray);font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-align:center;padding:1rem}
+    .photo-slot .pi{font-size:2.5rem}
+    .process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-bottom:3rem}
+    .step{background:var(--card);border:1px solid var(--border);padding:2rem;position:relative}
+    .step-num{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:rgba(255,45,247,.12);line-height:1;margin-bottom:.5rem}
+    .step h4{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.05em;color:var(--white);margin-bottom:.6rem}
+    .step p{font-size:.85rem;color:var(--gray);line-height:1.6}
+    .btn-back{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:.9rem 1.8rem;margin-top:2rem;box-shadow:0 0 20px rgba(255,45,247,.4)}
+    @media(max-width:640px){.photo-grid{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="home.html">PC REVIVE</a>
+  <a class="nav-back" href="home.html">← Volver al inicio</a>
+</nav>
+<div class="page-hero">
+  <div class="eyebrow">Seguridad y vigilancia</div>
+  <h1>Instalación de<br><span class="grad-pink">Cámaras</span></h1>
+  <p class="hero-sub">Sistemas de videovigilancia <strong>CCTV e IP</strong> para colegios, unidades educativas y negocios en Cochabamba. Monitoreo en tiempo real desde tu celular, las 24 horas.</p>
+</div>
+<div class="content">
+  <h2>¿Qué incluye el servicio?</h2>
+  <div class="cards-grid">
+    <div class="c-card">
+      <span class="c-icon">📷</span>
+      <h3>Cámaras HD Full Color</h3>
+      <p>Cámaras de alta resolución 1080p y 4K para interiores y exteriores, con visión nocturna a color.</p>
+    </div>
+    <div class="c-card">
+      <span class="c-icon">📱</span>
+      <h3>Monitoreo desde el Celular</h3>
+      <p>Ve tus cámaras en tiempo real desde cualquier smartphone o computadora, desde cualquier lugar del mundo.</p>
+    </div>
+    <div class="c-card">
+      <span class="c-icon">💾</span>
+      <h3>Grabación Continua</h3>
+      <p>DVR/NVR con disco duro de almacenamiento. Grabación 24/7 con detección de movimiento y alertas.</p>
+    </div>
+    <div class="c-card">
+      <span class="c-icon">🏫</span>
+      <h3>Diseñado para Colegios</h3>
+      <p>Instalación especializada para patios, entradas, pasillos, aulas y zonas de acceso en unidades educativas.</p>
+    </div>
+    <div class="c-card">
+      <span class="c-icon">🔧</span>
+      <h3>Instalación Profesional</h3>
+      <p>Cableado estructurado, instalación limpia y soporte técnico post-venta incluido en el servicio.</p>
+    </div>
+    <div class="c-card">
+      <span class="c-icon">☁️</span>
+      <h3>Nube Opcional</h3>
+      <p>Almacenamiento en la nube disponible para acceder a grabaciones pasadas desde cualquier dispositivo.</p>
+    </div>
+  </div>
+
+  <h2>Nuestros Trabajos</h2>
+  <p style="color:var(--gray);margin-bottom:1.5rem;font-size:.9rem">Agrega aquí fotos de tus instalaciones reales en colegios y negocios de Cochabamba.</p>
+  <div class="photo-grid">
+    <div class="photo-slot"><div class="pi">📷</div><span>Foto instalación<br>exterior colegio</span></div>
+    <div class="photo-slot"><div class="pi">📷</div><span>Foto DVR / NVR<br>instalado</span></div>
+    <div class="photo-slot"><div class="pi">📷</div><span>Foto cámara<br>en pasillo</span></div>
+    <div class="photo-slot"><div class="pi">📷</div><span>Foto monitoreo<br>en celular</span></div>
+    <div class="photo-slot"><div class="pi">📷</div><span>Foto instalación<br>en patio</span></div>
+    <div class="photo-slot"><div class="pi">📷</div><span>Foto resultado<br>final</span></div>
+  </div>
+
+  <h2>Proceso de Instalación</h2>
+  <div class="process-steps">
+    <div class="step"><div class="step-num">01</div><h4>Visita técnica gratuita</h4><p>Evaluamos tu espacio y te recomendamos la cantidad y tipo de cámaras ideal.</p></div>
+    <div class="step"><div class="step-num">02</div><h4>Cotización sin compromiso</h4><p>Recibe una propuesta detallada con precios claros, sin costos ocultos.</p></div>
+    <div class="step"><div class="step-num">03</div><h4>Instalación profesional</h4><p>Nuestro equipo instala el sistema de forma limpia y ordenada.</p></div>
+    <div class="step"><div class="step-num">04</div><h4>Capacitación y soporte</h4><p>Te enseñamos a usar el sistema y te dejamos con soporte técnico activo.</p></div>
+  </div>
+
+  <a class="btn-back" href="home.html">← Volver al inicio</a>
+  &nbsp;&nbsp;
+  <a class="btn-back" href="contacto.html" style="background:linear-gradient(135deg,var(--violet),var(--purple));box-shadow:0 0 20px rgba(108,43,255,.4)">Pedir cotización →</a>
+</div>
+</body>
+</html>
